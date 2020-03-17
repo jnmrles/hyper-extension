@@ -1,7 +1,3 @@
-// if (localStorage.length > 0) {
-//   $('#showSignIn').addClass('invisible');
-//   $('#jobForm').removeClass('invisible');
-// }
 chrome.storage.local.get('email', response => {
   if (response.email) {
     $.ajax({
@@ -11,10 +7,11 @@ chrome.storage.local.get('email', response => {
       dataType: 'json',
 
       success: function(data, status, xhr) {
-        localStorage.setItem(
-          'accessToken',
-          xhr.getResponseHeader('access-token')
-        );
+        // ! Commented out logic could be referenced to authorize with cookies !
+        // localStorage.setItem(
+        //   'accessToken',
+        //   xhr.getResponseHeader('access-token')
+        // );
         // localStorage.setItem('expiry', xhr.getResponseHeader('expiry'));
         // localStorage.setItem('tokenType', xhr.getResponseHeader('token-type'));
         // localStorage.setItem('uid', xhr.getResponseHeader('uid'));
@@ -52,10 +49,6 @@ $('#login').click(function(event) {
         'accessToken',
         xhr.getResponseHeader('access-token')
       );
-      // localStorage.setItem('expiry', xhr.getResponseHeader('expiry'));
-      // localStorage.setItem('tokenType', xhr.getResponseHeader('token-type'));
-      // localStorage.setItem('uid', xhr.getResponseHeader('uid'));
-      // localStorage.setItem('client', xhr.getResponseHeader('client'));
 
       $('#showSignIn').fadeOut('slow', function() {
         $('#showSignIn').addClass('invisible');
@@ -74,43 +67,35 @@ $('#login').click(function(event) {
   event.stopPropagation();
 });
 
-chrome.storage.local.get('colour', response => {
-  if (response.colour) {
-    document.querySelector('#colour-input').value = response.colour;
+chrome.storage.local.get('size', response => {
+  if (response.size) {
+    document.querySelector('#size-input').value = response.size;
   }
 });
 
-chrome.storage.local.get('test', response => {
-  if (response.test) {
-    document.querySelector('#cars').value = response.test;
+chrome.storage.local.get('store', response => {
+  if (response.store) {
+    document.querySelector('#store').value = response.store;
   } else {
-    document.querySelector('#cars').value = 'choose';
+    document.querySelector('#store').value = 'choose';
   }
 });
 
 document.querySelector('#changeColor').addEventListener('click', () => {
   console.log('click');
-  // read the colour that the user has selected
-  const colour = document.querySelector('#colour-input').value;
-  const test = document.querySelector('#cars').value;
+  // read the size that the user has selected
+  const size = document.querySelector('#size-input').value;
 
-  chrome.storage.local.set({ colour });
+  chrome.storage.local.set({ size });
   alert('submmited');
-
-  // get all the google tabs and send a message to their tabs
-  chrome.tabs.query({ url: 'https://*.nakedcph.com/*' }, tabs => {
-    tabs.forEach(tab => chrome.tabs.sendMessage(tab.id, { colour }));
-  });
 });
 
-document.querySelector('#cars').addEventListener('change', () => {
-  // read the colour that the user has selected
+document.querySelector('#store').addEventListener('change', () => {
+  // read the size that the user has selected
 
-  const test = document.querySelector('#cars').value;
+  const store = document.querySelector('#store').value;
 
-  chrome.storage.local.set({ test });
-
-  // get all the google tabs and send a message to their tabs
+  chrome.storage.local.set({ store });
 });
 
 $('#logout').click(function(event) {

@@ -1,14 +1,12 @@
-chrome.storage.local.get(['colour', 'test'], response => {
-  console.log(response.test);
-  if (response.colour && response.test === 'naked') {
-    console.log(response);
+chrome.storage.local.get(['size', 'store'], response => {
+  if (response.size && response.store === 'naked') {
     let atcSuccess = false;
     let size = document.getElementsByClassName('dropdown-item');
 
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
 
-      if (elements.innerHTML.includes(response.colour)) {
+      if (elements.innerHTML.includes(response.size)) {
         elements.click();
         atcSuccess = true;
         document
@@ -29,14 +27,14 @@ chrome.storage.local.get(['colour', 'test'], response => {
     if (atcSuccess === true) {
       checkout('https://www.nakedcph.com/en/cart/view', 'mini-cart', 5);
     }
-  } else if (response.colour && response.test === 'soto') {
+  } else if (response.size && response.store === 'soto') {
     let atcSuccess = false;
     let size = document.getElementsByClassName('dropdown-item');
 
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
 
-      if (elements.innerHTML.includes(response.colour)) {
+      if (elements.innerHTML.includes(response.size)) {
         elements.click();
         atcSuccess = true;
         document
@@ -61,14 +59,14 @@ chrome.storage.local.get(['colour', 'test'], response => {
         'https://www.sotostore.com/cart/view'
       );
     }
-  } else if (response.colour && response.test === 'hollywood') {
+  } else if (response.size && response.store === 'hollywood') {
     let atcSuccess = false;
     let size = document.getElementsByClassName('option');
 
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
 
-      if (elements.innerHTML.includes(response.colour)) {
+      if (elements.innerHTML.includes(response.size)) {
         elements.click();
         atcSuccess = true;
         document.getElementsByClassName('large green add-to-cart')[0].click();
@@ -86,16 +84,15 @@ chrome.storage.local.get(['colour', 'test'], response => {
       HollyCheckout(100, 'button green', `https://www.hollywood.eu/cart/view`);
     }
   } else {
-    CaliRootsAtc(response.colour);
+    CaliRootsAtc(response.size);
   }
 });
 
-// document.getElementsByClassName('large green add-to-cart')[0].click();
-
+// sleep function returns a promise so we are able to await it in our atc functions
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+// Helper checkout function for naked
 async function checkout(url, modal, time) {
   await sleep(time);
   if (!document.getElementById(modal)) {
@@ -104,7 +101,7 @@ async function checkout(url, modal, time) {
     window.location = url;
   }
 }
-
+// helper function for soto checkout
 async function SotoCheckout(time, name, url) {
   await sleep(time);
   if (!document.getElementsByClassName(name)[0]) {
@@ -114,6 +111,7 @@ async function SotoCheckout(time, name, url) {
   }
 }
 
+// helper functoin for Hollywood checkout
 async function HollyCheckout(time, name, url) {
   await sleep(time);
   if (document.getElementsByClassName('count')[0].innerHTML.includes('0')) {
@@ -122,10 +120,10 @@ async function HollyCheckout(time, name, url) {
     document.getElementsByClassName(name)[0].click();
   }
 }
-
+// Caliroots atc function
 async function CaliRootsAtc(Size) {
-  console.log(Size);
   await sleep(100);
+  // have to wait for Caliroots to fully render in order to be able to select a size and cart. This would check for an element that is displayed once the size option and functionality is fully rendered. If it isnt, itll retry.
   if (!document.getElementById('_hjRemoteVarsFrame')) {
     CaliRootsAtc(Size);
   } else {
@@ -136,7 +134,6 @@ async function CaliRootsAtc(Size) {
       let elements = size[i];
 
       if (elements.innerHTML.includes(Size)) {
-        console.log('element', elements);
         elements.click();
         atcSuccess = true;
         document.getElementsByClassName('add-to-cart-form-submit')[0].click();
@@ -150,28 +147,9 @@ async function CaliRootsAtc(Size) {
         break;
       }
     }
+    // Does not go to checkout page yet. Since theres cart holds, not really necessary at the moment.
     if (atcSuccess === true) {
       console.log('added');
     }
   }
 }
-// const req = new XMLHttpRequest();
-// const baseUrl = 'https://www.hollywood.eu/cart/add';
-// const urlParams = `_AntiCsrfToken=2ccbc1dc21c14716a4822f146d65b27a&id=719211&g-recaptcha-response=03AERD8XoQc3PbehniYGLvr5dWvT8L6_9b_rrfkOnHpZVfoRyAIzoNwXrMxEI9oYFFO6o7BT6ma_m1Bi5XBIMmnI3gskQ88-_nMshhJ0vt7CRO4x0Qiu7wbCSMHrZtc2VM_B_kW8ZlLWUNpvVIo-cdU4OWECUL3o0VOVqn9wz5kB53cygCEOpl78iu68rfRjX2-5xr7zkQ15N0oAH_u1fkZVOrJb3Blq7OR49y2jxDP3WkequLHRzpTi-asYYvk6DyxO_kpy6olWhgIzZVucLczcbTW3txxPoiZJmgmMbLthc_oEOSxfZqcsoQkn_mmkrSiRWmSt2dvgdxQwxzt32cQ7B1mGRfmhuL7nvBJc6h1CefnVXIKrhze6mnjSaNtU5qDZ5T-8qi8fTU`;
-
-// req.open('POST', baseUrl, true);
-// req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-// req.send(urlParams);
-
-// window.location = 'https://www.hollywood.eu/cart/view'
-
-//    // if (size.innerHTML ===('US 7')) {
-//   console.log(size.innerHTML);
-//   size.click();
-//   // checkout();
-//   break;
-// } else {
-//   options[i + 1].click();
-//   checkout();
-//   break;
-// }
