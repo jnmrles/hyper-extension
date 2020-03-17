@@ -1,24 +1,133 @@
-<!doctype html>
 <!--
  This page is shown when the extension button is clicked, because the
  "browser_action" field in manifest.json contains the "default_popup" key with value "popup.html".
  -->
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-    </style>
-    <!--
-      - JavaScript and HTML must be in separate files
-     -->
-    <script src="popup.js"></script>
-  </head>
-  <body>
-    Welcome!!
-  </body>
-</html>
+    <title>Job Hunger</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="styles.css" /> -->
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body
+    class="container"
+    style="background-image: linear-gradient(rgb(24, 63, 220), rgb(20, 29, 135));"
+  >
+    <div id="showSignIn">
+      <div class="text-center">
+        <img src="hyper.png" />
+      </div>
+      <h3
+        class="text-center"
+        style="color: cornsilk; font-family: 'Tillium';font-size: 22px;"
+      >
+        Sign Into Hyper Raffle:
+      </h3>
+      <div class="error">
+        <p style="color: cornsilk; font-style: italic">
+          Invalid login credentials. Please try again.
+        </p>
+      </div>
+      <form method="post" class="form-group">
+        <p>
+          <input
+            type="text"
+            name="login"
+            value=""
+            placeholder="Email"
+            id="email"
+            class="wide-input"
+          />
+        </p>
+        <div class="border"></div>
+        <p>
+          <input
+            type="password"
+            name="password"
+            value=""
+            placeholder="Password"
+            id="password"
+            class="wide-input"
+          />
+        </p>
+        <div class="border"></div>
+        <br />
+        <p class="submit" style="color: darkblue;" style="text-align: center">
+          <input
+            class="btn btn-outline-primary"
+            type="submit"
+            name="commit"
+            value="Log In"
+            id="login"
+            class="special-button"
+          />
+        </p>
+      </form>
+    </div>
+
+    <div id="jobForm" class="invisible">
+      <div class="text-center">
+        <img src="hyper.png" />
+      </div>
+      <label
+        style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
+        for="cars"
+        class="text-center"
+        >Choose Raffle Site:</label
+      >
+      <select id="cars" class="form-control">
+        <option value="choose">select</option>
+        <option value="naked">Naked</option>
+        <option value="soto">Soto</option>
+        <option value="hollywood">HollyWood</option>
+        <option value="caliroots">CaliRoots</option>
+      </select>
+      <label
+        style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
+        for="colour-input"
+        class="text-center"
+        >Select Size:</label
+      >
+      <input id="colour-input" type="text" />
+
+      <form method="post" class="form-group">
+        <p>
+          <label
+            style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
+            for="email"
+            class="text-center"
+            >Discord Webhook:</label
+          >
+          <input
+            type="text"
+            name="discord"
+            value=""
+            placeholder="webhook"
+            id="discord"
+            class="wide-input"
+          />
+        </p>
+        <div class="border"></div>
+
+        <div class="border"></div>
+        <br />
+
+        <button class="btn btn-primary" id="changeColor">Submit</button>
+      </form>
+
+      <div>
+        <button id="logout" class="btn btn-outline-primary">Log Out</button>
+      </div>
+    </div>
+  </body>
+  <script src="popup.js"></script>
+  <script src="hollywood.js" type="module"></script>
+</html>

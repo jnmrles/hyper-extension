@@ -1,18 +1,29 @@
 {
   "manifest_version": 2,
 
-  "name": "Basic Extension To Autofill Form",
-  "description": "This extension fills up the form automatically by fetching its value from the database",
+  "name": "Raffle Extension",
+  "description": "This extension automates the add to cart process on multiple sites",
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "shoe.png",
     "default_popup": "popup.html",
-	"default_title": "Click here!"
+    "default_title": "Raffle ATC!"
   },
-    
-  "permissions": [
-    "activeTab",
-    "http://*/*","https://*/*"
-  ]
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": [
+        "https://*.nakedcph.com/*",
+        "https://*.hollywood.no/*",
+        "https://*.hollywood.eu/*",
+        "https://*.sotostore.com/*",
+        "https://caliroots.com/*"
+      ]
+    }
+  ],
+
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+
+  "permissions": ["http://*/*", "https://*/*", "storage"]
 }
