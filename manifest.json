@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
 
-  "name": "Hyper Raffle Extension",
+  "name": "Hyper Helper",
   "description": "This extension automates the add to cart process on multiple sites",
-  "version": "1.0",
+  "version": "0.1",
 
   "browser_action": {
     "default_icon": "shoe.png",
     "default_popup": "popup.html",
-    "default_title": "Hyper Raffle"
+    "default_title": "Hyper Helper"
   },
   "content_scripts": [
     {

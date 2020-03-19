@@ -1,6 +1,26 @@
 html {
   font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Helvetica Neue, Arial, sans-serif;
+    Helvetica Neue, Arial, sans-serif !important;
+  font-size: 16px;
+  background-color: #202c54;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: #fff;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 400px !important;
+  overflow: hidden;
+}
+
+body {
+  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif !important;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -8,14 +28,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  background-color: #161e38;
+  background-color: #202c54 !important;
   color: #fff;
   -webkit-user-select: none;
   -moz-user-select: -moz-none;
   -ms-user-select: none;
   user-select: none;
 }
-width: 150px !important; min-width: 50px; max-width: 150px;"
 
 *,
 :after,
@@ -101,9 +120,10 @@ select {
 }
 
 input {
-  min-width: 180px;
   min-height: 30px;
   margin-bottom: 10px;
+  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+  font-weight: bold;
 }
 
 input,
@@ -119,39 +139,12 @@ select {
   font-weight: 500;
 }
 
-::-webkit-input-placeholder {
-  font-family: Cabin;
-  color: #787e8c;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-::-moz-placeholder {
-  font-family: Cabin;
-  color: #787e8c;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-:-ms-input-placeholder {
-  font-family: Cabin;
-  color: #787e8c;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-::-ms-input-placeholder {
-  font-family: Cabin;
-  color: #787e8c;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-::placeholder {
-  font-family: Cabin;
-  color: #787e8c;
-  font-weight: 500;
-  font-size: 14px;
+input::placeholder {
+  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif !important;
+  color: #787e8c !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
 }
 
 .spacer {
@@ -726,67 +719,12 @@ input#generator-count::-webkit-inner-spin-button {
 input#generator-count[type='number'] {
   -moz-appearance: textfield;
 }
-<div id="jobForm">
-      <div class="text-center">
-        <img src="hyper.svg" />
-      </div>
-      <h5
-        class="text-center"
-        style="margin-top: 24px; margin-bottom: 24px;  color: #fff; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;"
-      >
-        Choose a Site:
-      </h5>
 
-
-      <div>
-
-
-        <form method="post"  >
-          <p class="text-center"  style="font: 400 11px system-ui;">
-          <select id="store"  style="background-color: #202c54;
-          ; width: 150px !important; min-width: 50px; max-width: 200px;">
-              <option value="choose">select</option>
-              <option value="naked">Naked</option>
-              <option value="soto">Soto</option>
-              <option value="hollywood">HollyWood</option>
-              <option value="caliroots">CaliRoots</option>
-            </select>
-          </p>
-          <div class="border"></div>
-          <div>
-
-            <p class="text-center">
-              <input
-                type="text"
-                name="size"
-                value=""
-                placeholder="Password"
-                id="size-input"
-
-                style="font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold"
-
-
-              />
-            </p>
-
-          </div>
-          <div class="border"></div>
-          <br />
-          <div class="text-center">
-            <p class="submit" style="color: darkblue;" >
-              <input
-                class="button authbtn pre-auth"
-                type="submit"
-                name="commit"
-                value="SIGN IN"
-
-                id="login"
-                class="special-button"
-                style="font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold"
-              />
-            </p>
-
-          </div>
-      </div>
-      </form>
-    </div>
+h5 {
+  color: #fff !important;
+  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif !important;
+  font-weight: bold !important;
+  font-size: 17px !important;
+  margin-bottom: 15px !important;
+  margin-top: 15px !important;
+}
