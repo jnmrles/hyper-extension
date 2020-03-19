@@ -81,8 +81,9 @@ chrome.storage.local.get('store', response => {
   }
 });
 
-document.querySelector('#changeColor').addEventListener('click', () => {
+document.querySelector('#changeColor').addEventListener('click', event => {
   console.log('click');
+  event.preventDefault();
   // read the size that the user has selected
   const size = document.querySelector('#size-input').value;
 

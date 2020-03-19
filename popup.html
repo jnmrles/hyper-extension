@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Job Hunger</title>
+    <title>Hyper Raffle</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
@@ -15,118 +15,160 @@
       integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="hyper.css" />
   </head>
   <body
-    class="container"
-    style="background-image: linear-gradient(rgb(24, 63, 220), rgb(20, 29, 135));"
+    class=" auth-container"
+    style="font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  background-color:#202c54;
+  color: #fff;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;"
   >
     <div id="showSignIn">
       <div class="text-center">
-        <img src="hyper.png" />
+        <img src="hyper.svg" />
       </div>
-      <h3
+      <h4
         class="text-center"
-        style="color: cornsilk; font-family: 'Tillium';font-size: 22px;"
+        style="margin-top: 24px; margin-bottom: 24px;  color: #fff; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;"
       >
-        Sign Into Hyper Raffle:
-      </h3>
-      <div class="error">
-        <p style="color: cornsilk; font-style: italic">
+        SIGN INTO YOUR ACCOUNT
+      </h4>
+      <div class="text-center">
+        <p
+          style="color: cornsilk; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic"
+          class="error"
+        >
           Invalid login credentials. Please try again.
         </p>
       </div>
       <form method="post" class="form-group">
-        <p>
+        <p class="text-center">
           <input
             type="text"
             name="login"
             value=""
             placeholder="Email"
             id="email"
-            class="wide-input"
+            class="text-center"
           />
         </p>
         <div class="border"></div>
-        <p>
+
+        <p class="text-center">
           <input
             type="password"
             name="password"
             value=""
             placeholder="Password"
             id="password"
-            class="wide-input"
+            class="text-center"
           />
         </p>
         <div class="border"></div>
         <br />
-        <p class="submit" style="color: darkblue;" style="text-align: center">
-          <input
-            class="btn btn-outline-primary"
-            type="submit"
-            name="commit"
-            value="Log In"
-            id="login"
-            class="special-button"
-          />
-        </p>
+
+        <div class="text-center">
+          <p class="submit" style="color: darkblue;">
+            <input
+              class="button authbtn pre-auth"
+              type="submit"
+              name="commit"
+              value="Log In"
+              style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
+              id="login"
+            />
+          </p>
+        </div>
       </form>
     </div>
 
     <div id="jobForm" class="invisible">
       <div class="text-center">
-        <img src="hyper.png" />
+        <img src="hyper.svg" />
       </div>
-      <label
-        style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
-        for="store"
+      <h5
         class="text-center"
-        >Choose Raffle Site:</label
+        style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
       >
-      <select id="store" class="form-control">
-        <option value="choose">select</option>
-        <option value="naked">Naked</option>
-        <option value="soto">Soto</option>
-        <option value="hollywood">HollyWood</option>
-        <option value="caliroots">CaliRoots</option>
-      </select>
-      <label
-        style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
-        for="size-input"
+        CHOOSE A SITE:
+      </h5>
+      <p class="text-center">
+        <select
+          id="store"
+          style="background-color: #061133;
+        ; width: 180px !important; min-width: 50px; max-width: 200px;"
+        >
+          <option value="choose">select</option>
+          <option value="naked">Naked</option>
+          <option value="soto">Soto</option>
+          <option value="hollywood">HollyWood</option>
+          <option value="caliroots">CaliRoots</option>
+        </select>
+      </p>
+
+      <h5
         class="text-center"
-        >Select Size:</label
+        style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
       >
-      <input id="size-input" type="text" />
+        CHOOSE A SIZE:
+      </h5>
+      <p class="text-center">
+        <input id="size-input" type="text" class="text-center" />
+      </p>
 
       <form method="post" class="form-group">
-        <p>
-          <label
-            style="color: cornsilk; font-family: 'Nova Flat';font-size: 22px;"
-            for="email"
-            class="text-center"
-            >Discord Webhook:</label
-          >
+        <h5
+          class="text-center"
+          style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
+        >
+          DISCORD:
+        </h5>
+        <p class="text-center">
           <input
             type="text"
             name="discord"
             value=""
             placeholder="webhook"
             id="discord"
-            class="wide-input"
+            class="text-center"
           />
         </p>
         <div class="border"></div>
 
         <div class="border"></div>
         <br />
-
-        <button class="btn btn-primary" id="changeColor">Submit</button>
       </form>
 
-      <div>
-        <button id="logout" class="btn btn-outline-primary">Log Out</button>
+      <div class="text-center">
+        <button class="btn btn-success" id="changeColor">
+          <p
+            style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
+          >
+            Submit
+          </p>
+        </button>
+
+        <button id="logout" class="btn btn-danger ">
+          <p
+            style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
+          >
+            Sign Out
+          </p>
+        </button>
       </div>
     </div>
   </body>
   <script src="popup.js"></script>
-  <script src="hollywood.js" type="module"></script>
 </html>
