@@ -4,22 +4,6 @@ chrome.storage.local.get('email', response => {
   }
 });
 
-$('#login').click(function(event) {
-  event.preventDefault();
-  var email = $('#email').val();
-  var password = $('#password').val();
-
-  // Login Logic 
-
-  $('#auth').fadeOut('slow', function() {
-    $('#auth').hide()
-    $('#dash').fadeIn('medium');
-    $('#dash').show()
-  });
-
-  chrome.storage.local.set({ email });
-});
-
 chrome.storage.local.get('size', response => {
   if (response.size) {
     document.querySelector('#size-input').value = response.size;
@@ -49,13 +33,3 @@ $('#store').change(() => {
 
   chrome.storage.local.set({ store });
 })
-
-$('#logout').click(function(event) {
-  chrome.storage.local.clear();
-  
-  $('#dash').fadeOut('slow', function() {
-    $('#dash').hide()
-    $('#auth').fadeIn('medium');
-    $('#auth').show()
-  });
-});

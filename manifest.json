@@ -6,7 +6,7 @@
   "version": "0.1",
 
   "browser_action": {
-    "default_icon": "shoe.png",
+    "default_icon": "logo.png",
     "default_popup": "popup.html",
     "default_title": "Hyper Helper"
   },
@@ -23,7 +23,7 @@
     }
   ],
 
-  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://cdn.firebase.com https://www.gstatic.com; object-src 'self'",
 
   "permissions": ["http://*/*", "https://*/*", "storage"]
 }
