@@ -4,171 +4,85 @@
  -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Hyper Raffle</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<head>
+  <title>Hyper Raffle</title>
 
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="hyper.css" />
-  </head>
-  <body
-    class=" auth-container"
-    style="font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Helvetica Neue, Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-  background-color:#202c54;
-  color: #fff;
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
-  user-select: none;"
-  >
-    <div id="showSignIn">
-      <div class="text-center">
-        <img src="hyper.svg" />
-      </div>
-      <h4
-        class="text-center"
-        style="margin-top: 24px; margin-bottom: 24px;  color: #fff; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;"
-      >
-        SIGN INTO YOUR ACCOUNT
-      </h4>
-      <div class="text-center">
-        <p
-          style="color: cornsilk; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic"
-          class="error"
-        >
-          Invalid login credentials. Please try again.
-        </p>
-      </div>
-      <form method="post" class="form-group">
-        <p class="text-center">
-          <input
-            type="text"
-            name="login"
-            value=""
-            placeholder="Email"
-            id="email"
-            class="text-center"
-          />
-        </p>
-        <div class="border"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
-        <p class="text-center">
-          <input
-            type="password"
-            name="password"
-            value=""
-            placeholder="Password"
-            id="password"
-            class="text-center"
-          />
-        </p>
-        <div class="border"></div>
-        <br />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+</head>
 
-        <div class="text-center">
-          <p class="submit" style="color: darkblue;">
-            <input
-              class="button authbtn pre-auth"
-              type="submit"
-              name="commit"
-              value="Log In"
-              style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
-              id="login"
-            />
-          </p>
-        </div>
-      </form>
+<body>
+  <div id="auth">
+    <h4 class="text-center" style="margin-top: 24px; margin-bottom: 24px; color: #fff; font-family: Cabin, -apple-system,
+        BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;">
+      SIGN INTO YOUR ACCOUNT
+    </h4>
+    
+    <div class="text-center" style="display: none;">
+      <p style="color: rgb(178, 68, 70); margin-bottom: 20px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic;"
+        class="auth-error">
+        Invalid login credentials. Please try again.
+      </p>
     </div>
 
-    <div id="jobForm" class="invisible">
-      <div class="text-center">
-        <img src="hyper.svg" />
-      </div>
-      <h5
-        class="text-center"
-        style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
-      >
-        CHOOSE A SITE:
-      </h5>
+    <form method="post" class="form-group">
       <p class="text-center">
-        <select
-          id="store"
-          style="background-color: #061133;
-        ; width: 180px !important; min-width: 50px; max-width: 200px;"
-        >
-          <option value="choose">select</option>
-          <option value="naked">Naked</option>
-          <option value="soto">Soto</option>
-          <option value="hollywood">HollyWood</option>
-          <option value="caliroots">CaliRoots</option>
-        </select>
+        <input type="text" name="login" value="" placeholder="Email" id="email" class="text-center" />
       </p>
+      <div class="border"></div>
 
-      <h5
-        class="text-center"
-        style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
-      >
-        CHOOSE A SIZE:
-      </h5>
       <p class="text-center">
-        <input id="size-input" type="text" class="text-center" />
+        <input type="password" name="password" value="" placeholder="Password" id="password" class="text-center" />
       </p>
-
-      <form method="post" class="form-group">
-        <h5
-          class="text-center"
-          style="color: #B0B3BC;  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 17px;  "
-        >
-          DISCORD:
-        </h5>
-        <p class="text-center">
-          <input
-            type="text"
-            name="discord"
-            value=""
-            placeholder="webhook"
-            id="discord"
-            class="text-center"
-          />
-        </p>
-        <div class="border"></div>
-
-        <div class="border"></div>
-        <br />
-      </form>
+      <div class="border"></div>
+      <br />
 
       <div class="text-center">
-        <button class="btn btn-success" id="changeColor">
-          <p
-            style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
-          >
-            Submit
-          </p>
-        </button>
-
-        <button id="logout" class="btn btn-danger ">
-          <p
-            style="  font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;  "
-          >
-            Sign Out
-          </p>
-        </button>
+        <input class="button authbtn pre-auth" type="submit" value="SIGN IN"
+          style="width: 180px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
+          id="login" />
       </div>
+    </form>
+  </div>
+
+  <div id="dash" style="display: none; margin-top: 30px;">
+    <h5 class="text-center">
+      CHOOSE A SITE:
+    </h5>
+
+    <p class="text-center">
+      <select id="store" style="color: #fff; background-color: #061133; width: 280px;">
+        <option value="naked">NakedCPH</option>
+        <option value="soto">Soto Store</option>
+        <option value="hollywood">HollyWood</option>
+        <option value="caliroots">Cali Roots</option>
+      </select>
+    </p>
+
+    <h5 class="text-center">
+      CHOOSE A SIZE:
+    </h5>
+
+    <p class="text-center">
+      <input id="size-input" type="text" class="text-center" placeholder="Size" style="color: #fff;" />
+    </p>
+
+    <div class="text-center" style="margin-top: 30px; margin-bottom: 30px">
+      <input class="button" type="submit" name="commit" value="Start"
+        style="width: 165px; background-color: rgb(33, 157, 108); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
+        id="changeColor" />
+
+      <input class="button" type="submit" name="commit" value="Sign Out"
+        style="width: 95px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+        id="logout" />
     </div>
-  </body>
-  <script src="popup.js"></script>
+  </div>
+  </div>
+</body>
+<script src="popup.js"></script>
+
 </html>

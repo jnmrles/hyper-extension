@@ -1,35 +1,6 @@
 chrome.storage.local.get('email', response => {
   if (response.email) {
-    $.ajax({
-      method: 'POST',
-      url: 'http://localhost:8080/api/users/test',
-      data: { email: response.email },
-      dataType: 'json',
-
-      success: function(data, status, xhr) {
-        // ! Commented out logic could be referenced to authorize with cookies !
-        // localStorage.setItem(
-        //   'accessToken',
-        //   xhr.getResponseHeader('access-token')
-        // );
-        // localStorage.setItem('expiry', xhr.getResponseHeader('expiry'));
-        // localStorage.setItem('tokenType', xhr.getResponseHeader('token-type'));
-        // localStorage.setItem('uid', xhr.getResponseHeader('uid'));
-        // localStorage.setItem('client', xhr.getResponseHeader('client'));
-
-        $('#showSignIn').fadeOut('slow', function() {
-          $('#showSignIn').addClass('invisible');
-          $('#jobForm').fadeIn('medium');
-          $('#jobForm').removeClass('invisible');
-        });
-      },
-      error: function(data) {
-        $('.error')
-          .fadeIn(300)
-          .delay(1500)
-          .fadeOut(400);
-      },
-    });
+    // Try and login behind the scenes
   }
 });
 
@@ -38,33 +9,15 @@ $('#login').click(function(event) {
   var email = $('#email').val();
   var password = $('#password').val();
 
-  $.ajax({
-    method: 'POST',
-    url: 'http://localhost:8080/api/users/test',
-    data: { email: email },
-    dataType: 'json',
+  // Login Logic 
 
-    success: function(data, status, xhr) {
-      localStorage.setItem(
-        'accessToken',
-        xhr.getResponseHeader('access-token')
-      );
-
-      $('#showSignIn').fadeOut('slow', function() {
-        $('#showSignIn').addClass('invisible');
-        $('#jobForm').fadeIn('medium');
-        $('#jobForm').removeClass('invisible');
-      });
-      chrome.storage.local.set({ email });
-    },
-    error: function(data) {
-      $('.error')
-        .fadeIn(300)
-        .delay(1500)
-        .fadeOut(400);
-    },
+  $('#auth').fadeOut('slow', function() {
+    $('#auth').hide()
+    $('#dash').fadeIn('medium');
+    $('#dash').show()
   });
-  event.stopPropagation();
+
+  chrome.storage.local.set({ email });
 });
 
 chrome.storage.local.get('size', response => {
@@ -81,30 +34,28 @@ chrome.storage.local.get('store', response => {
   }
 });
 
-document.querySelector('#changeColor').addEventListener('click', event => {
-  console.log('click');
-  event.preventDefault();
+$('#changeColor').click(() => {
   // read the size that the user has selected
-  const size = document.querySelector('#size-input').value;
+  const size = $('#size-input').val();
+  const site = $('#store').val();
 
   chrome.storage.local.set({ size });
-  alert('submmited');
-});
+  alert(`Task started on site: ${site} and size: ${size}`);
+})
 
-document.querySelector('#store').addEventListener('change', () => {
+$('#store').change(() => {
   // read the size that the user has selected
-
-  const store = document.querySelector('#store').value;
+  const store = $('#store').val();
 
   chrome.storage.local.set({ store });
-});
+})
 
 $('#logout').click(function(event) {
-  event.preventDefault();
   chrome.storage.local.clear();
-  $('#jobForm').fadeOut('slow', function() {
-    $('#jobForm').addClass('invisible');
-    $('#showSignIn').fadeIn('medium');
-    $('#showSignIn').removeClass('invisible');
+  
+  $('#dash').fadeOut('slow', function() {
+    $('#dash').hide()
+    $('#auth').fadeIn('medium');
+    $('#auth').show()
   });
 });
