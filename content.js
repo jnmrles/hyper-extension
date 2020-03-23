@@ -2,34 +2,51 @@ chrome.storage.local.get(['size', 'store'], response => {
   if (response.size && response.store === 'naked') {
     let atcSuccess = false;
     let size = document.getElementsByClassName('dropdown-item');
+    let myArr = [...size];
+    let url = window.location.href;
+
+    let newArr = myArr.filter(s => {
+      return s.innerHTML.includes(3);
+    });
 
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
 
       if (elements.innerHTML.includes(response.size)) {
         elements.click();
-        atcSuccess = true;
         document
           .getElementsByClassName('btn btn-primary product-form-submit')[0]
           .click();
-
-        break;
-      } else if (elements.innerHTML.includes('39')) {
-        elements.click();
         atcSuccess = true;
-        document
-          .getElementsByClassName('btn btn-primary product-form-submit')[0]
-          .click();
 
         break;
       }
     }
-    if (atcSuccess === true) {
-      checkout('https://www.nakedcph.com/en/cart/view', 'mini-cart', 5);
+    if (atcSuccess === false && url.includes('product/')) {
+      newArr[Math.floor(Math.random() * newArr.length)].click();
+      document
+        .getElementsByClassName('btn btn-primary product-form-submit')[0]
+        .click();
+      atcSuccess = true;
     }
-  } else if (response.size && response.store === 'soto') {
-    let atcSuccess = false;
+
+    if (atcSuccess === true) {
+      checkout(
+        'https://www.nakedcph.com/en/cart/view',
+        'mini-cart-items mini-cart-section',
+        15
+      );
+    }
+  }
+  // ----------------------- Soto Logic -------------------------------
+  //
+  //
+  else if (response.size && response.store === 'soto') {
     let size = document.getElementsByClassName('dropdown-item');
+    let copySizes = [...size];
+    let myArr = copySizes.slice(2);
+    let atcSuccess = false;
+    let url = window.location.href;
 
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
@@ -42,24 +59,46 @@ chrome.storage.local.get(['size', 'store'], response => {
           .click();
 
         break;
-      } else if (elements.innerHTML.includes('8')) {
-        elements.click();
-        atcSuccess = true;
-        document
-          .getElementsByClassName('btn is-primary product-form-btns')[0]
-          .click();
-
-        break;
       }
     }
-    if (atcSuccess === true) {
+    if (response.size.includes('.') && atcSuccess === false) {
+      let size = document.getElementsByClassName('dropdown-item');
+
+      for (let i = 0; i < size.length; i++) {
+        let elements = size[i];
+
+        if (elements.innerHTML.includes(response.size.replace('.', ','))) {
+          elements.click();
+          atcSuccess = true;
+          document
+            .getElementsByClassName('btn is-primary product-form-btn')[0]
+            .click();
+
+          break;
+        }
+      }
+    }
+    if (atcSuccess === false && url.includes('product/')) {
+      myArr[Math.floor(Math.random() * myArr.length)].click();
+      document
+        .getElementsByClassName('btn is-primary product-form-btn')[0]
+        .click();
+      atcSuccess = true;
+    }
+
+    if (atcSuccess) {
       SotoCheckout(
-        20,
+        15,
         'mini-cart-item-count is-active',
-        'https://www.sotostore.com/cart/view'
+        'https://www.sotostore.com/cart/view',
+        response.size
       );
     }
-  } else if (response.size && response.store === 'hollywood') {
+  }
+  //-------------hollywood logic-------------------------------
+  //
+  //
+  else if (response.size && response.store === 'hollywood') {
     let atcSuccess = false;
     let size = document.getElementsByClassName('option');
 
@@ -72,41 +111,70 @@ chrome.storage.local.get(['size', 'store'], response => {
         document.getElementsByClassName('large green add-to-cart')[0].click();
 
         break;
-      } else if (elements.innerHTML.includes('39')) {
-        elements.click();
-        atcSuccess = true;
-        document.getElementsByClassName('large green add-to-cart')[0].click();
-
-        break;
       }
     }
     if (atcSuccess === true) {
       HollyCheckout(100, 'button green', `https://www.hollywood.eu/cart/view`);
     }
-  } else {
+  }
+  //----------------------------- caliroots logic ---------------------------
+  //
+  //
+  else {
     CaliRootsAtc(response.size);
   }
 });
+
+//
+//
+//
+//
+// ----------- HELPER FUNCTIONS -----------------//
 
 // sleep function returns a promise so we are able to await it in our atc functions
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+//  Checkout - Functions //
+
 // Helper checkout function for naked
 async function checkout(url, modal, time) {
   await sleep(time);
-  if (!document.getElementById(modal)) {
-    checkout(url);
+  if (!document.getElementsByClassName(modal)[0]) {
+    checkout(url, modal, time);
   } else {
+    let brand = document.getElementsByClassName(
+      'product-property product-name'
+    )[0].innerHTML;
+
+    let sizeCart = document.getElementsByClassName('mc-item-size')[0].innerHTML;
+
+    let photo = document.getElementsByClassName('mc-item-img')[0].src;
+
+    Discord(brand, '', photo, sizeCart, 'naked');
     window.location = url;
   }
 }
+
 // helper function for soto checkout
-async function SotoCheckout(time, name, url) {
+
+async function SotoCheckout(time, name, url, size) {
+  let title = document.getElementsByClassName(
+    'product-property product-property-productname'
+  )[0].innerHTML;
+
+  let brand = document.getElementsByClassName('product-brand')[0].innerHTML;
+
+  let photo = document.getElementsByClassName(
+    'card-img gallery-carousel-img'
+  )[0].src;
+
   await sleep(time);
   if (!document.getElementsByClassName(name)[0]) {
-    SotoCheckout(time, name, url);
+    SotoCheckout(time, name, url, size);
   } else {
+    Discord(brand, title, photo, size, 'soto');
     window.location = url;
   }
 }
@@ -120,6 +188,7 @@ async function HollyCheckout(time, name, url) {
     document.getElementsByClassName(name)[0].click();
   }
 }
+
 // Caliroots atc function
 async function CaliRootsAtc(Size) {
   await sleep(100);
@@ -152,4 +221,34 @@ async function CaliRootsAtc(Size) {
       console.log('added');
     }
   }
+}
+
+// Discord Function
+
+function Discord(brand, title, photo, size, store) {
+  var request = new XMLHttpRequest();
+  request.open(
+    'POST',
+    'https://discordapp.com/api/webhooks/691431197171253298/T6XKXivCqiiBfhHi4hLRH8lOYywo7cTIgfQTc3s67LqAvCTgMJTBL9TcIYmsLt_KO_R4'
+  );
+
+  request.setRequestHeader('Content-type', 'application/json');
+
+  var params = {
+    username: 'Hyper Helper!',
+    avatar_url: '',
+    embeds: [
+      {
+        title: ` ${brand} \n${title}`,
+        color: 1127128,
+        description: ` Store: ${store} \n Size:${size}`,
+        thumbnail: {
+          url: photo,
+        },
+        timestamp: new Date(),
+      },
+    ],
+  };
+
+  request.send(JSON.stringify(params));
 }

@@ -12,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "js": ["content.js", "pay.js"],
       "matches": [
         "https://*.nakedcph.com/*",
         "https://*.hollywood.no/*",
