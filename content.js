@@ -95,7 +95,7 @@ chrome.storage.local.get(['size', 'store'], response => {
       );
     }
   }
-  //-------------hollywood logic-------------------------------
+  //----------------------hollywood logic-------------------------------
   //
   //
   else if (response.size && response.store === 'hollywood') {
@@ -114,7 +114,12 @@ chrome.storage.local.get(['size', 'store'], response => {
       }
     }
     if (atcSuccess === true) {
-      HollyCheckout(100, 'button green', `https://www.hollywood.eu/cart/view`);
+      HollyCheckout(
+        100,
+        'button green',
+        `https://www.hollywood.eu/cart/view`,
+        response.size
+      );
     }
   }
   //----------------------------- caliroots logic ---------------------------
@@ -136,7 +141,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//  Checkout - Functions //
+//  Checkout - Functions
 
 // Helper checkout function for naked
 async function checkout(url, modal, time) {
@@ -180,12 +185,17 @@ async function SotoCheckout(time, name, url, size) {
 }
 
 // helper functoin for Hollywood checkout
-async function HollyCheckout(time, name, url) {
+async function HollyCheckout(time, name, url, size) {
   await sleep(time);
   if (document.getElementsByClassName('count')[0].innerHTML.includes('0')) {
     HollyCheckout(time, name, url);
   } else {
     document.getElementsByClassName(name)[0].click();
+    let title = document.getElementsByClassName('brand')[0].innerHTML;
+    let brand = document.getElementsByClassName('name')[0].innerHTML;
+    let photo = document.getElementsByTagName('img')[15].src;
+
+    Discord(brand, '', photo, size, 'Hollywood');
   }
 }
 
@@ -218,8 +228,21 @@ async function CaliRootsAtc(Size) {
     }
     // Does not go to checkout page yet. Since theres cart holds, not really necessary at the moment.
     if (atcSuccess === true) {
-      console.log('added');
+      CaliCheckout(10, 'count', 'https://caliroots.com/cart/view', Size);
     }
+  }
+}
+async function CaliCheckout(time, name, url, size) {
+  await sleep(time);
+  if (document.getElementsByClassName(name)[0].innerHTML.includes('0')) {
+    CaliCheckout(time, name, url, size);
+  } else {
+    document.getElementsByClassName(name)[0].click();
+    console.log('added');
+    let title = document.getElementsByTagName('h1')[0].innerHTML;
+    let photo = document.getElementsByTagName('img')[67].src;
+
+    Discord(title, '', photo, size, 'CaliRoots');
   }
 }
 
