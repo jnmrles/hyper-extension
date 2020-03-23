@@ -34,7 +34,8 @@ chrome.storage.local.get(['size', 'store'], response => {
       checkout(
         'https://www.nakedcph.com/en/cart/view',
         'mini-cart-items mini-cart-section',
-        15
+        15,
+        response.size
       );
     }
   }
@@ -144,7 +145,7 @@ function sleep(ms) {
 //  Checkout - Functions
 
 // Helper checkout function for naked
-async function checkout(url, modal, time) {
+async function checkout(url, modal, time, size) {
   await sleep(time);
   if (!document.getElementsByClassName(modal)[0]) {
     checkout(url, modal, time);
@@ -153,11 +154,7 @@ async function checkout(url, modal, time) {
       'product-property product-name'
     )[0].innerHTML;
 
-    let sizeCart = document.getElementsByClassName('mc-item-size')[0].innerHTML;
-
-    let photo = document.getElementsByClassName('mc-item-img')[0].src;
-
-    Discord(brand, '', photo, sizeCart, 'naked');
+    Discord(brand, '', '', size, 'naked');
     window.location = url;
   }
 }
