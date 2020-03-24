@@ -9,10 +9,20 @@ chrome.storage.local.get(['size', 'store'], response => {
       return s.innerHTML.includes(3);
     });
 
+    let filteredArr = newArr.filter(s => {
+      return !s.children[0].innerHTML.includes('Sold out');
+    });
+
+    console.log(filteredArr);
+
     for (let i = 0; i < size.length; i++) {
       let elements = size[i];
 
-      if (elements.innerHTML.includes(response.size)) {
+      if (
+        elements.innerHTML.includes(response.size) &&
+        !elements.children[0].innerHTML.includes('Sold out')
+      ) {
+        console.log(elements.children[0].innerHTML.includes('Sold out'));
         elements.click();
         document
           .getElementsByClassName('btn btn-primary product-form-submit')[0]
@@ -23,10 +33,13 @@ chrome.storage.local.get(['size', 'store'], response => {
       }
     }
     if (atcSuccess === false && url.includes('product/')) {
-      newArr[Math.floor(Math.random() * newArr.length)].click();
+      let element = filteredArr[Math.floor(Math.random() * filteredArr.length)];
+
+      element.click();
       document
         .getElementsByClassName('btn btn-primary product-form-submit')[0]
         .click();
+
       atcSuccess = true;
     }
 
@@ -155,7 +168,7 @@ async function checkout(url, modal, time, size) {
     )[0].innerHTML;
 
     Discord(brand, '', '', size, 'naked');
-    window.location = url;
+    // window.location = url;
   }
 }
 
@@ -249,7 +262,7 @@ function Discord(brand, title, photo, size, store) {
   var request = new XMLHttpRequest();
   request.open(
     'POST',
-    'https://discordapp.com/api/webhooks/691431197171253298/T6XKXivCqiiBfhHi4hLRH8lOYywo7cTIgfQTc3s67LqAvCTgMJTBL9TcIYmsLt_KO_R4'
+    'https://discordapp.com/api/webhooks/691830336165904435/m3d9b_RtlnGLIIBd-OO4K1XLFuVxNY1ecf3xMppWq36qD1iGmMJADwkOUfPpiUgw0gYq'
   );
 
   request.setRequestHeader('Content-type', 'application/json');
