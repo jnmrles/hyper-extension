@@ -268,13 +268,13 @@ function Discord(brand, title, photo, size, store) {
   request.setRequestHeader('Content-type', 'application/json');
 
   var params = {
-    username: 'Hyper Helper!',
+    username: 'Hyper ATC Success',
     avatar_url: '',
     embeds: [
       {
         title: ` ${brand} \n${title}`,
         color: 1127128,
-        description: ` Store: ${store} \n Size:${size}`,
+        description: ` Store: ${store} \n Size: ${size}`,
         thumbnail: {
           url: photo,
         },
