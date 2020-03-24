@@ -274,7 +274,7 @@ function Discord(brand, title, photo, size, store) {
       {
         title: ` ${brand} \n${title}`,
         color: 1127128,
-        description: ` Store: ${store} \n Size: ${size}`,
+        description: `Store: ${store} \n Size: ${size}`,
         thumbnail: {
           url: photo,
         },
