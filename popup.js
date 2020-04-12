@@ -25,11 +25,23 @@ $('#changeColor').click(() => {
 
   chrome.storage.local.set({ size });
   alert(`Task started on site: ${site} and size: ${size}`);
-})
+});
 
 $('#store').change(() => {
   // read the size that the user has selected
   const store = $('#store').val();
 
   chrome.storage.local.set({ store });
-})
+
+  chrome.storage.local.get('project', response => {
+    console.log(response.project);
+  });
+});
+
+$('#stop').click(() => {
+  // read the size that the user has selected
+  const store = 'stop';
+
+  chrome.storage.local.set({ store });
+  alert(`Stopped`);
+});

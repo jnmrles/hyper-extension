@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
   <link rel="stylesheet" href="main.css" />
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
     integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
   <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js" crossorigin="anonymous"></script>
@@ -24,12 +25,18 @@
       SIGN INTO YOUR ACCOUNT
     </h4>
 
-    <div class="text-center" style="display: none;">
-      <p style="color: rgb(178, 68, 70); margin-bottom: 20px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic;"
-        class="auth-error">
-        Invalid login credentials. Please try again.
-      </p>
+    <div class = "err" style="display: none;" >
+
+
+      <div class="text-center">
+        <p style="color: rgb(178, 68, 70); margin-bottom: 20px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic;"
+          class="auth-error">
+          Invalid login credentials. Please try again.
+        </p>
+      </div>
     </div>
+
+
 
     <form method="post" class="form-group">
       <p class="text-center">
@@ -44,9 +51,28 @@
       <br />
 
       <div class="text-center">
-        <input class="button authbtn pre-auth" type="submit" value="SIGN IN"
-          style="width: 180px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
-          id="login" />
+        <button  id = "login"class="blob-btn">
+          Sign In
+          <span class="blob-btn__inner">
+            <span class="blob-btn__blobs">
+              <span class="blob-btn__blob"></span>
+              <span class="blob-btn__blob"></span>
+              <span class="blob-btn__blob"></span>
+              <span class="blob-btn__blob"></span>
+            </span>
+          </span>
+        </button>
+
+
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+            <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+          </filter>
+        </defs>
+      </svg>
       </div>
     </form>
   </div>
@@ -78,10 +104,13 @@
         style="width: 165px; background-color: rgb(33, 157, 108); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
         id="changeColor" />
 
-      <input class="button" type="submit" name="commit" value="Sign Out"
+      <input class="button" type="submit" name="commit" value="Stop"
         style="width: 95px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
-        id="logout" />
+        id="stop" />
     </div>
+    <p class="text-center"><input class="button" type="submit" name="commit" value="Sign Out"
+      style="width: 195px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+      id="logout" /> </p>
   </div>
   </div>
 </body>

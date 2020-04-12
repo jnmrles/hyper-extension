@@ -3,7 +3,7 @@
 
   "name": "Hyper Helper",
   "description": "This extension automates the add to cart process on multiple sites",
-  "version": "0.1",
+  "version": "0.6",
 
   "browser_action": {
     "default_icon": "logo.png",
@@ -12,14 +12,26 @@
   },
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "matches": ["https://*.sotostore.com/*"],
+      "all_frames": true,
+      "js": ["site/soto.js"]
+    },
+    {
+      "matches": ["https://*.nakedcph.com/*"],
+      "all_frames": true,
+      "js": ["site/naked.js"]
+    },
+    {
+      "matches": ["https://caliroots.com/*"],
+      "all_frames": true,
+      "js": ["site/caliroots.js"]
+    },
+    {
+      "js": ["site/hollywood.js"],
       "matches": [
-        "https://*.nakedcph.com/*",
         "https://*.hollywood.no/*",
         "https://*.hollywood.eu/*",
-        "https://*.hollywood.se/*",
-        "https://*.sotostore.com/*",
-        "https://caliroots.com/*"
+        "https://*.hollywood.se/*"
       ]
     }
   ],

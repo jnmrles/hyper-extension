@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 (async function() {
   const config = {
     apiKey: 'AIzaSyBS72fUTDhzpyEMNW0FThCJvpDW6yvFy14',
@@ -18,8 +17,6 @@
   const emailInput = $('#email');
   const passInput = $('#password');
 
-  let email;
-
   try {
     await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   } catch (error) {
@@ -27,6 +24,7 @@
   }
 
   const onAuthError = error => {
+    $('.err').attr('style', 'display: block');
     if (error.code === 'auth/invalid-email') {
       console.log('The email address is poorly formatted.');
       return;
@@ -62,6 +60,7 @@
   });
 
   $('#logout').click(function(event) {
+    $('.err').attr('style', 'display: none');
     chrome.storage.local.clear();
 
     auth.signOut().catch(onAuthError);
@@ -80,17 +79,18 @@
       .signInWithEmailAndPassword(emailInput.val(), passInput.val())
       .then(() => {
         $('#auth').fadeOut('slow', function() {
+          $('.err').attr('style', 'display: none');
           $('#auth').hide();
           $('#dash').fadeIn('medium');
           $('#dash').show();
         });
+
+        let email = emailInput.val();
+
+        chrome.storage.local.set({ email });
       })
       .catch(onAuthError);
 
     event.preventDefault();
-
-    chrome.storage.local.set({
-      email,
-    });
   });
 })();
