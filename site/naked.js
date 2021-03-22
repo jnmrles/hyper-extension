@@ -16,7 +16,6 @@ chrome.storage.local.get(
 );
 
 function Naked(userSize, random) {
-  console.log("hello from naked");
   let ATC = false;
   let foundSize = false;
   let size = document.getElementById("product-form-select").options;
