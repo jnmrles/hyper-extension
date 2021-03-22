@@ -1,12 +1,6 @@
 (async function () {
   const config = {
-    apiKey: "AIzaSyBTHy7xvizGvZNKLwnxosAz4y7jJiiACTw",
-    authDomain: "kyoto-chrome.firebaseapp.com",
-    projectId: "kyoto-chrome",
-    storageBucket: "kyoto-chrome.appspot.com",
-    messagingSenderId: "393228039353",
-    appId: "1:393228039353:web:467e9e2532bbf03ce41768",
-    measurementId: "G-R2NK6FKM7H",
+   secret: ''
   };
 
   firebase.initializeApp(config);
