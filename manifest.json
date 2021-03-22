@@ -1,42 +1,123 @@
 {
   "manifest_version": 2,
 
-  "name": "Hyper Helper",
+  "name": "Kyoto ACO",
   "description": "This extension automates the add to cart process on multiple sites",
-  "version": "0.6",
+  "version": "1.3.2",
 
   "browser_action": {
-    "default_icon": "logo.png",
-    "default_popup": "popup.html",
-    "default_title": "Hyper Helper"
+    "default_icon": "k.png",
+    "default_popup": "kyoto.html",
+    "default_title": "Kyoto ATC"
   },
   "content_scripts": [
     {
       "matches": ["https://*.sotostore.com/*"],
       "all_frames": true,
-      "js": ["site/soto.js"]
+      "js": ["site/soto.js", "site/s.js", "jquery.js"]
     },
     {
-      "matches": ["https://*.nakedcph.com/*"],
+      "matches": ["https://*.stress95.com/*"],
       "all_frames": true,
-      "js": ["site/naked.js"]
+      "js": ["site/stress95.js", "site/s.js", "jquery.js"]
     },
     {
-      "matches": ["https://caliroots.com/*"],
+      "matches": ["https://*.nakedcph.com/*", "https://live.adyen.com/*","https://*.paypal.com/*"],
       "all_frames": true,
-      "js": ["site/caliroots.js"]
+      "js": ["site/naked.js","site/autofill/naked.js","site/autofill/nakedAyden.js","site/autofill/paypal.js", "site/s.js", "jquery.js"]
     },
     {
-      "js": ["site/hollywood.js"],
+      "matches": [
+        "https://*.caliroots.com/*",
+        "https://*.caliroots.de/*",
+        "https://*.caliroots.se/*",
+        "https://*.caliroots.com/*"
+      ],
+      "all_frames": true,
+      "js": ["site/caliroots.js", "site/s.js", "jquery.js"]
+    },
+    {
+      "js": ["site/hollywood.js", "site/s.js", "jquery.js"],
+      "all_frames": true,
       "matches": [
         "https://*.hollywood.no/*",
         "https://*.hollywood.eu/*",
-        "https://*.hollywood.se/*"
+        "https://*.hollywood.se/*",
+        "https://*.hollywood.de/*"
+      ]
+    },
+    {
+      "js": ["jquery.js", "site/junkyard.js", "site/s.js"],
+      "matches": [
+        "https://*.junkyard.com/*",
+        "https://*.junkyard.se/*",
+        "https://*.junkyard.no/*",
+        "https://*.junkyard.de/*"
+      ]
+    },
+    {
+      "js": ["jquery.js", "site/yme.js", "site/s.js"],
+      "matches": ["https://*.ymeuniverse.com/*"]
+    },
+    {
+      "js": ["jquery.js", "site/skatedeluxe.js", "site/s.js"],
+      "matches": ["https://*.skatedeluxe.com/*"]
+    },
+    {
+      "js": ["jquery.js", "site/luisaviaroma.js", "site/s.js"],
+      "matches": ["https://*.luisaviaroma.com/*"]
+    },
+    {
+      "js": ["jquery.js", "site/antonioli.js", "site/s.js"],
+      "matches": ["https://*.antonioli.eu/*"]
+    },
+    {
+      "js": ["jquery.js", "site/footshop.js", "site/s.js"],
+      "matches": ["https://*.footshop.com/*"]
+    },
+    {
+      "js": ["jquery.js", "site/footdistrict.js", "site/s.js"],
+      "matches": ["https://*.footdistrict.com/*"]
+    },
+
+    {
+      "js": ["jquery.js", "site/wood.js", "site/s.js"],
+      "matches": ["https://*.woodwood.com/*"]
+    },
+
+    {
+      "js": ["jquery.js", "site/zalando.js", "site/s.js", "site/autofill/zalando.js","site/autofill/zalandoFinal.js"],
+      "matches": [
+        "https://*.zalando.com/*",
+        "https://*.zalando.de/*",
+        "https://*.zalando.fr/*",
+        "https://*.zalando.lu/*",
+        "https://*.zalando.at/*",
+        "https://*.zalando.it/*",
+        "https://*.zalando.no/*",
+        "https://*.zalando.ch/*",
+        "https://*.zalando.es/*",
+        "https://*.zalando.se/*",
+        "https://*.zalando.uk/*",
+        "https://*.zalando.nl/*",
+        "https://*.zalando.dk/*",
+        "https://*.zalando.pl/*",
+        "https://*.zalando.be/*",
+        "https://*.zalando.fi/*",
+        "https://*.zalando.cz/*",
+        "https://*.zalando.ie/*",
+        "https://*.en.zalando.de/*",
+        "https://*.zalando.co.uk/*"
       ]
     }
   ],
+  "background": {
+    "scripts": ["background.js"]
+  },
 
-  "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://cdn.firebase.com https://www.gstatic.com; object-src 'self'",
 
-  "permissions": ["http://*/*", "https://*/*", "storage"]
+
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://cdn.firebase.com https://www.gstatic.com https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js; object-src 'self'",
+
+  "permissions": ["http://*/*", "https://*/*", "storage", "proxy", "*://*.caliroots.com/*", "tabs", "webNavigation"]
 }

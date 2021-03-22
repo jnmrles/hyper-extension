@@ -1,17 +1,13 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "antonioli") {
       if (response.email) {
         if (response.random) {
-          console.log("hello");
-          document.onreadystatechange("random");
+          console.log("running random");
+          Ant("random");
         } else {
-          document.onreadystatechange(response.size);
+          Ant(response.size);
         }
       } else {
         alert("Please Sign In. If you dont have a login, please contact JM_");
@@ -20,30 +16,21 @@ chrome.storage.local.get(
   }
 );
 
-document.onreadystatechange = (size) => {
-  if (document.readyState === "complete") {
-    Cali(size);
-  }
-};
-
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function Ant(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
+  let size = $('[name="select_projects"]');
   let myArr = [...size];
   let url = window.location.href;
+  console.log("hello");
+  console.log("OPtions", size.options);
 
   for (let i = 0; i < size.length; i++) {
     let elements = size[i];
 
-    if (elements.innerText.includes(userSize)) {
-      elements.click();
-
-      document.getElementsByClassName("MuiButton-label")[1].click();
+    if (elements.innerHTML.includes(userSize)) {
+      $(elements).prop("selected", true);
+      $("#product-addtocart").click();
       ATC = true;
       foundSize = true;
 
@@ -51,18 +38,20 @@ async function Cali(userSize, random) {
     }
   }
   if (ATC === true) {
-    checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
-      2,
-      userSize,
-      url
-    );
+    console.log("ATC IS SET TO TRUE");
+    // checkout(
+    //   "https://www.antonioli.eu/cart",
+    //   "MiniCart__total",
+    //   1,
+    //   userSize,
+    //   url
+    // );
   } else if (ATC === false) {
-    let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+    let element = myArr[Math.floor(Math.random() * myArr.length)];
+    let size_obj = element.innerHTML;
+    console.log("retrying for size", size_obj);
 
-    Cali(newSize);
+    Ant(size_obj);
   }
 }
 
@@ -76,33 +65,23 @@ function sleep(ms) {
 async function checkout(url, modal, time, size, link) {
   await sleep(time);
   let atcSuccess = false;
-
   if (!document.getElementsByClassName(modal)[0]) {
     checkout(url, modal, time, size, link);
   }
-
   if (document.getElementsByClassName(modal)[0]) {
     atcSuccess = true;
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let photo = $(".zoom").attr("data-image");
+    let brand = document.getElementsByClassName("details--name")[0].children[0]
+      .innerHTML;
+    Webhook(brand, "", photo, size, "Antonioli", link);
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
-
-    Discord(brand, "", photo, size, "CaliRoots", link);
+    Discord(brand, "", photo, size, "Antonioli", link);
 
     window.location = url;
   }
 }
-
 chrome.storage.local.get(["sup", "shop", "msh"], (response) => {
   const adding = () => {
     let request = true;

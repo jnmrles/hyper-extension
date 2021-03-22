@@ -1,0 +1,737 @@
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with value "popup.html".
+ -->
+ <!DOCTYPE html>
+ <html>
+
+ <head>
+   <title>Kyoto Scripts</title>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+   <link rel="stylesheet" href="main.css" />
+   <link rel="stylesheet" href="toggle.css" />
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+   integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+   <link
+   rel="stylesheet"
+   href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+ />
+
+ <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+ <link
+   rel="stylesheet"
+   href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
+ />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+   <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js" crossorigin="anonymous"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js" crossorigin="anonymous"></script>
+   <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-firestore.js"></script>
+ </head>
+
+ <body>
+   <div id="auth">
+    <div class="text-center">
+      <img class="text-center" src="ktitle.png" class="img-fluid "  >
+    </div>
+     <h4 class="text-center" style="margin-top: 24px; margin-bottom: 24px; color: #fff; font-family: Cabin, -apple-system,
+         BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;">
+       SIGN INTO YOUR ACCOUNT
+     </h4>
+
+     <div class = "err" style="display: none;" >
+
+
+       <div class="text-center">
+         <p style="color: rgb(178, 68, 70); margin-bottom: 20px; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-style: italic;"
+           class="auth-error">
+           Invalid login credentials. Please try again.
+         </p>
+       </div>
+     </div>
+
+
+
+     <form method="post" class="form-group">
+       <p class="text-center">
+         <input type="text" name="login" value="" placeholder="Email" id="email" class="text-center" />
+       </p>
+       <div class="border"></div>
+
+       <p class="text-center">
+         <input type="password" name="password" value="" placeholder="Password" id="password" class="text-center" />
+       </p>
+       <div class="border"></div>
+       <br />
+
+       <div class="text-center">
+         <button  id = "login"class="blob-btn">
+           Sign In
+           <span class="blob-btn__inner">
+             <span class="blob-btn__blobs">
+               <span class="blob-btn__blob"></span>
+               <span class="blob-btn__blob"></span>
+               <span class="blob-btn__blob"></span>
+               <span class="blob-btn__blob"></span>
+             </span>
+           </span>
+         </button>
+
+
+       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+         <defs>
+           <filter id="goo">
+             <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+             <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+           </filter>
+         </defs>
+       </svg>
+       </div>
+     </form>
+   </div>
+
+   <div id='content' style= "display: none">
+    <div class ='text-center'>
+      <p id='status' style='color:rgb(255, 30, 34) !important'>Kyoto Task OFF</p>
+      <nav id="nav" class="text-center" >
+        <ul class="nav nav-pills " syle="text-align: center;">
+          <li id="task-icon" role="presentation" class="active">
+            <a ><i class="fab fa-opencart"></i></a>
+          </li>
+          <li id="refresher-icon"role="presentation">
+            <a ><i class="fa fa-refresh fa-spin"></i>
+            </i></a>
+          </li>
+          <li id="profile-icon"role="presentation">
+            <a >  <i class="fa fa-user" ></i></a>
+          </li>
+          <li id="settings-icon"role="presentation">
+            <a ><i class="fas fa-cog"></i>
+            </i></a>
+          </li>
+
+        </ul>
+        <img src="k.png"/>
+      </nav>
+    </div>
+
+   <div id="dash">
+
+     <h5 class="text-center">
+       SELECT SITE:
+     </h5>
+     <p class="text-center">
+       <select id="store" style="color: #fff; background-color: #061133; width: 280px;">
+        <option value="caliroots">Cali Roots</option>
+        <option value="junkyard">JunkYard</option>
+        <option value="junkyard2">JunkYard 2</option>
+        <option value="naked">NakedCPH</option>
+        <option value="soto">Soto Store</option>
+        <option value="stress">Stress95</option>
+        <option value="skate">SkateDeluxe </option>
+        <option value="wood">WoodWood</option>
+        <option value="yme">YME Universe</option>
+        <option value="zalando">Zalando</option>
+       </select>
+     </p>
+     <h5 class="text-center">
+       TARGET SIZE:
+     </h5>
+     <p class="text-center">
+       <input id="size-input" type="text" class="text-center" placeholder="Size" style="color: #fff; width: 280px !important" />
+     </p>
+
+     <h5 class="text-center" style="margin-top: 10px;">
+      BETA FEATURES:
+    </h5>
+    <div class="text-center">
+     <div id='random' class="checkbox checkbox-slider--b-flat checkbox-slider-md checkbox-inline text-center" style="margin-top: 10px;">
+      <label  id='randomSpan'  class='checkbox-inline' style="color:rgba(63, 61, 61, 0.911);">
+        <input id='randomCheck' type="checkbox"><span>RANDOM</span>
+      </label>
+      <div id='aco' class="checkbox checkbox-slider--b-flat checkbox-slider-md checkbox-inline">
+        <label id='acoSpan' class='checkbox-inline' style="color:rgba(63, 61, 61, 0.911);">
+          <input id="acoInput" type="checkbox"><span>ACO</span>
+        </label>
+      </div>
+
+     </div>
+
+     <div class="text-center" style="margin-top: 10px;">
+      <h6 style='color:rgb(128, 255, 217)'>DELAY</h6>
+      <div>
+        <div class="checkbox checkbox-slider--b-flat checkbox-slider-md checkbox-inline">
+          <label class='checkbox-inline' style="color:rgb(128, 255, 217);margin-left: 5px !important;">
+            <input type="checkbox"><span></span>
+          </label>
+        </div>
+        <div class='checkbox-inline'>
+          <label class='checkbox-inline' style=" color:rgb(128, 255, 217);margin-left: 0px !important ;">
+            <input placeholder="CART" class="text-center" type="input" style="width: 80px; height: 5px !important;" >
+            <input placeholder="CHECKOUT" class="text-center" type="input" style="width: 80px; height: 5px !important;" >
+          </label>
+          </div>
+      </div>
+
+     </div>
+
+     <div class="text-center" style="margin-top: 30px; margin-bottom: 30px;">
+       <input class="button" type="submit" name="commit" value="Start"
+         style="width: 165px; background-color: rgb(101, 237, 167); opacity: 0.8; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
+         id="changeColor" />
+
+       <input class="button" type="submit" name="commit" value="Stop"
+         style="width: 95px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+         id="stop" />
+     </div>
+
+   </div>
+   </div>
+   <div id="settings-profile" style="display: none;">
+    <h5 class="text-center">
+      DISCORD WEBHOOK
+    </h5>
+    <p class="text-center">
+      <input
+        id="webhook"
+        type="text"
+        class="text-center"
+        placeholder="WEBHOOK"
+        style="color: #fff; width: 280px;"
+      />
+    </p>
+      <h5 class="text-center" style="color: green;"> v 1.0.0</h5>
+
+      <div class="text-center" style="margin-top: 10px; margin-bottom: 15px">
+
+        <input
+        class="button"
+        type="submit"
+        name="commit"
+        value="Save"
+        style="width: 160px; ; background-color: rgb(101, 237, 167); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+        id="discord-save"
+      />
+
+        <input
+          class="button"
+          type="submit"
+          name="commit"
+          value="Test"
+          style="width: 120px; ; background-color: rgb(74, 127, 207); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+          id="discord"
+        />
+
+      </div>
+      <div class="text-center" style="margin-bottom: 30px;">
+        <input
+        class="button"
+        type="submit"
+        name="commit"
+        value="Log Out"
+        style="width: 280px; ; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+        id="logout"
+      />
+
+      </div>
+    </div>
+    </div>
+    <div id="billing-settings" style="display: none;">
+
+      <h5 class="text-center">
+        AUTOFILL PROFILE
+      </h5>
+
+
+      <h6 class='text-center' style="color: white">
+        EMAIL
+      </h6>
+      <p class="text-center">
+        <input
+          id="billing-email"
+          type="text"
+          class="text-center"
+          placeholder="EMAIL"
+          style="color: #fff; width: 300px;"
+        />
+      </p>
+      <p class="text-center">
+        <input
+          id="billing-phone"
+          type="text"
+          class="text-center"
+          placeholder="PHONE #"
+          style="color: #fff; width: 300px;"
+        />
+      </p>
+
+      <h6 class='text-center' style="color: white">
+        NAME
+      </h6>
+      <p class="text-center">
+        <input
+          id="firstName"
+          type="text"
+          class="text-center"
+          placeholder="FIRST"
+          style="color: #fff; width: 150px;"
+        />
+        <input
+        id="lastName"
+        type="text"
+        class="text-center"
+        placeholder="LAST"
+        style="color: #fff; width: 150px;"
+      />
+      </p>
+      <h6 class='text-center' style="color: white">
+      BILLING
+      </h6>
+
+      <p class="text-center">
+
+        <input
+          id="address"
+          type="text"
+          class="text-center"
+          placeholder="ADDRESS 1"
+          style="color: #fff; width: 300px;"
+        />
+
+
+      </p>
+
+      <p class="text-center">
+
+        <input
+          id="address2"
+          type="text"
+          class="text-center"
+          placeholder="ADDRESS 2"
+          style="color: #fff; width: 180px;"
+        />
+
+
+        <input
+          id="zipCode"
+          type="text"
+          class="text-center"
+          placeholder="ZIPCODE"
+          style="color: #fff; width: 120px;"
+        />
+
+      </p>
+      <p class="text-center">
+
+        <input
+          id="city"
+          type="text"
+          class="text-center"
+          placeholder="CITY"
+          style="color: #fff; width: 180px;"
+        />
+
+
+        <input
+          id="state"
+          type="text"
+          class="text-center"
+          placeholder="STATE""
+          style="color: #fff; width: 120px;"
+        />
+
+      </p>
+
+
+      <p class='text-center'>
+      <select id='country' style='color: #fff; background-color: #061133; width: 300px;'>
+        <option value="AF">Afghanistan</option>
+        <option value="AX">Åland Islands</option>
+        <option value="AL">Albania</option>
+        <option value="DZ">Algeria</option>
+        <option value="AS">American Samoa</option>
+        <option value="AD">Andorra</option>
+        <option value="AO">Angola</option>
+        <option value="AI">Anguilla</option>
+        <option value="AQ">Antarctica</option>
+        <option value="AG">Antigua and Barbuda</option>
+        <option value="AR">Argentina</option>
+        <option value="AM">Armenia</option>
+        <option value="AW">Aruba</option>
+        <option value="AU">Australia</option>
+        <option value="AT">Austria</option>
+        <option value="AZ">Azerbaijan</option>
+        <option value="BS">Bahamas</option>
+        <option value="BH">Bahrain</option>
+        <option value="BD">Bangladesh</option>
+        <option value="BB">Barbados</option>
+        <option value="BY">Belarus</option>
+        <option value="BE">Belgium</option>
+        <option value="BZ">Belize</option>
+        <option value="BJ">Benin</option>
+        <option value="BM">Bermuda</option>
+        <option value="BT">Bhutan</option>
+        <option value="BO">Bolivia, Plurinational State of</option>
+        <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+        <option value="BA">Bosnia and Herzegovina</option>
+        <option value="BW">Botswana</option>
+        <option value="BV">Bouvet Island</option>
+        <option value="BR">Brazil</option>
+        <option value="IO">British Indian Ocean Territory</option>
+        <option value="BN">Brunei Darussalam</option>
+        <option value="BG">Bulgaria</option>
+        <option value="BF">Burkina Faso</option>
+        <option value="BI">Burundi</option>
+        <option value="KH">Cambodia</option>
+        <option value="CM">Cameroon</option>
+        <option value="CA">Canada</option>
+        <option value="CV">Cape Verde</option>
+        <option value="KY">Cayman Islands</option>
+        <option value="CF">Central African Republic</option>
+        <option value="TD">Chad</option>
+        <option value="CL">Chile</option>
+        <option value="CN">China</option>
+        <option value="CX">Christmas Island</option>
+        <option value="CC">Cocos (Keeling) Islands</option>
+        <option value="CO">Colombia</option>
+        <option value="KM">Comoros</option>
+        <option value="CG">Congo</option>
+        <option value="CD">Congo, the Democratic Republic of the</option>
+        <option value="CK">Cook Islands</option>
+        <option value="CR">Costa Rica</option>
+        <option value="CI">Côte d'Ivoire</option>
+        <option value="HR">Croatia</option>
+        <option value="CU">Cuba</option>
+        <option value="CW">Curaçao</option>
+        <option value="CY">Cyprus</option>
+        <option value="CZ">Czech Republic</option>
+        <option value="DK">Denmark</option>
+        <option value="DJ">Djibouti</option>
+        <option value="DM">Dominica</option>
+        <option value="DO">Dominican Republic</option>
+        <option value="EC">Ecuador</option>
+        <option value="EG">Egypt</option>
+        <option value="SV">El Salvador</option>
+        <option value="GQ">Equatorial Guinea</option>
+        <option value="ER">Eritrea</option>
+        <option value="EE">Estonia</option>
+        <option value="ET">Ethiopia</option>
+        <option value="FK">Falkland Islands (Malvinas)</option>
+        <option value="FO">Faroe Islands</option>
+        <option value="FJ">Fiji</option>
+        <option value="FI">Finland</option>
+        <option value="FR">France</option>
+        <option value="GF">French Guiana</option>
+        <option value="PF">French Polynesia</option>
+        <option value="TF">French Southern Territories</option>
+        <option value="GA">Gabon</option>
+        <option value="GM">Gambia</option>
+        <option value="GE">Georgia</option>
+        <option value="DE">Germany</option>
+        <option value="GH">Ghana</option>
+        <option value="GI">Gibraltar</option>
+        <option value="GR">Greece</option>
+        <option value="GL">Greenland</option>
+        <option value="GD">Grenada</option>
+        <option value="GP">Guadeloupe</option>
+        <option value="GU">Guam</option>
+        <option value="GT">Guatemala</option>
+        <option value="GG">Guernsey</option>
+        <option value="GN">Guinea</option>
+        <option value="GW">Guinea-Bissau</option>
+        <option value="GY">Guyana</option>
+        <option value="HT">Haiti</option>
+        <option value="HM">Heard Island and McDonald Islands</option>
+        <option value="VA">Holy See (Vatican City State)</option>
+        <option value="HN">Honduras</option>
+        <option value="HK">Hong Kong</option>
+        <option value="HU">Hungary</option>
+        <option value="IS">Iceland</option>
+        <option value="IN">India</option>
+        <option value="ID">Indonesia</option>
+        <option value="IR">Iran, Islamic Republic of</option>
+        <option value="IQ">Iraq</option>
+        <option value="IE">Ireland</option>
+        <option value="IM">Isle of Man</option>
+        <option value="IL">Israel</option>
+        <option value="IT">Italy</option>
+        <option value="JM">Jamaica</option>
+        <option value="JP">Japan</option>
+        <option value="JE">Jersey</option>
+        <option value="JO">Jordan</option>
+        <option value="KZ">Kazakhstan</option>
+        <option value="KE">Kenya</option>
+        <option value="KI">Kiribati</option>
+        <option value="KP">Korea, Democratic People's Republic of</option>
+        <option value="KR">Korea, Republic of</option>
+        <option value="KW">Kuwait</option>
+        <option value="KG">Kyrgyzstan</option>
+        <option value="LA">Lao People's Democratic Republic</option>
+        <option value="LV">Latvia</option>
+        <option value="LB">Lebanon</option>
+        <option value="LS">Lesotho</option>
+        <option value="LR">Liberia</option>
+        <option value="LY">Libya</option>
+        <option value="LI">Liechtenstein</option>
+        <option value="LT">Lithuania</option>
+        <option value="LU">Luxembourg</option>
+        <option value="MO">Macao</option>
+        <option value="MK">Macedonia, the former Yugoslav Republic of</option>
+        <option value="MG">Madagascar</option>
+        <option value="MW">Malawi</option>
+        <option value="MY">Malaysia</option>
+        <option value="MV">Maldives</option>
+        <option value="ML">Mali</option>
+        <option value="MT">Malta</option>
+        <option value="MH">Marshall Islands</option>
+        <option value="MQ">Martinique</option>
+        <option value="MR">Mauritania</option>
+        <option value="MU">Mauritius</option>
+        <option value="YT">Mayotte</option>
+        <option value="MX">Mexico</option>
+        <option value="FM">Micronesia, Federated States of</option>
+        <option value="MD">Moldova, Republic of</option>
+        <option value="MC">Monaco</option>
+        <option value="MN">Mongolia</option>
+        <option value="ME">Montenegro</option>
+        <option value="MS">Montserrat</option>
+        <option value="MA">Morocco</option>
+        <option value="MZ">Mozambique</option>
+        <option value="MM">Myanmar</option>
+        <option value="NA">Namibia</option>
+        <option value="NR">Nauru</option>
+        <option value="NP">Nepal</option>
+        <option value="NL">Netherlands</option>
+        <option value="NC">New Caledonia</option>
+        <option value="NZ">New Zealand</option>
+        <option value="NI">Nicaragua</option>
+        <option value="NE">Niger</option>
+        <option value="NG">Nigeria</option>
+        <option value="NU">Niue</option>
+        <option value="NF">Norfolk Island</option>
+        <option value="MP">Northern Mariana Islands</option>
+        <option value="NO">Norway</option>
+        <option value="OM">Oman</option>
+        <option value="PK">Pakistan</option>
+        <option value="PW">Palau</option>
+        <option value="PS">Palestinian Territory, Occupied</option>
+        <option value="PA">Panama</option>
+        <option value="PG">Papua New Guinea</option>
+        <option value="PY">Paraguay</option>
+        <option value="PE">Peru</option>
+        <option value="PH">Philippines</option>
+        <option value="PN">Pitcairn</option>
+        <option value="PL">Poland</option>
+        <option value="PT">Portugal</option>
+        <option value="PR">Puerto Rico</option>
+        <option value="QA">Qatar</option>
+        <option value="RE">Réunion</option>
+        <option value="RO">Romania</option>
+        <option value="RU">Russian Federation</option>
+        <option value="RW">Rwanda</option>
+        <option value="BL">Saint Barthélemy</option>
+        <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+        <option value="KN">Saint Kitts and Nevis</option>
+        <option value="LC">Saint Lucia</option>
+        <option value="MF">Saint Martin (French part)</option>
+        <option value="PM">Saint Pierre and Miquelon</option>
+        <option value="VC">Saint Vincent and the Grenadines</option>
+        <option value="WS">Samoa</option>
+        <option value="SM">San Marino</option>
+        <option value="ST">Sao Tome and Principe</option>
+        <option value="SA">Saudi Arabia</option>
+        <option value="SN">Senegal</option>
+        <option value="RS">Serbia</option>
+        <option value="SC">Seychelles</option>
+        <option value="SL">Sierra Leone</option>
+        <option value="SG">Singapore</option>
+        <option value="SX">Sint Maarten (Dutch part)</option>
+        <option value="SK">Slovakia</option>
+        <option value="SI">Slovenia</option>
+        <option value="SB">Solomon Islands</option>
+        <option value="SO">Somalia</option>
+        <option value="ZA">South Africa</option>
+        <option value="GS">South Georgia and the South Sandwich Islands</option>
+        <option value="SS">South Sudan</option>
+        <option value="ES">Spain</option>
+        <option value="LK">Sri Lanka</option>
+        <option value="SD">Sudan</option>
+        <option value="SR">Suriname</option>
+        <option value="SJ">Svalbard and Jan Mayen</option>
+        <option value="SZ">Swaziland</option>
+        <option value="SE">Sweden</option>
+        <option value="CH">Switzerland</option>
+        <option value="SY">Syrian Arab Republic</option>
+        <option value="TW">Taiwan, Province of China</option>
+        <option value="TJ">Tajikistan</option>
+        <option value="TZ">Tanzania, United Republic of</option>
+        <option value="TH">Thailand</option>
+        <option value="TL">Timor-Leste</option>
+        <option value="TG">Togo</option>
+        <option value="TK">Tokelau</option>
+        <option value="TO">Tonga</option>
+        <option value="TT">Trinidad and Tobago</option>
+        <option value="TN">Tunisia</option>
+        <option value="TR">Turkey</option>
+        <option value="TM">Turkmenistan</option>
+        <option value="TC">Turks and Caicos Islands</option>
+        <option value="TV">Tuvalu</option>
+        <option value="UG">Uganda</option>
+        <option value="UA">Ukraine</option>
+        <option value="AE">United Arab Emirates</option>
+        <option value="GB">United Kingdom</option>
+        <option value="US">United States</option>
+        <option value="UM">United States Minor Outlying Islands</option>
+        <option value="UY">Uruguay</option>
+        <option value="UZ">Uzbekistan</option>
+        <option value="VU">Vanuatu</option>
+        <option value="VE">Venezuela, Bolivarian Republic of</option>
+        <option value="VN">Viet Nam</option>
+        <option value="VG">Virgin Islands, British</option>
+        <option value="VI">Virgin Islands, U.S.</option>
+        <option value="WF">Wallis and Futuna</option>
+        <option value="EH">Western Sahara</option>
+        <option value="YE">Yemen</option>
+        <option value="ZM">Zambia</option>
+        <option value="ZW">Zimbabwe</option>
+      </select>
+      </p>
+
+
+
+
+      <div class="container py-5">
+        <div class="text-center">
+          <div class="text-center">
+            <div class="text-center" style='margin-left: 20% !important;'>
+              <!-- Credit card form tabs -->
+              <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+                <li id='ccTab' class="nav-item">
+                  <a data-toggle="pill" href="#nav-tab-card" class="nav-link active rounded-pill">
+                                      <i class="fa fa-credit-card"></i>
+                                      Credit Card
+                                  </a>
+                </li>
+                <li id='ppTab' class="nav-item">
+                  <a data-toggle="pill" href="#nav-tab-paypal" class="nav-link rounded-pill">
+                                      <i class="fa fa-paypal"></i>
+                                      Paypal
+                                  </a>
+                </li>
+              </ul>
+              <!-- End -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center"  style='margin-left: 50px !important;margin-top: 5px;'>
+        <div class="text-center" style="border-radius: 25px; background-color: springgreen; width: 300px; height: 150px; padding: 20px">
+
+          <p class="text-center" style='margin-top: 0px !important'>
+
+            <input
+              id="cc"
+              type="text"
+              class="text-center"
+              placeholder="0000 0000 0000 0000 "
+              style="background-color:black !important; color: #fff; width: 250px;  border: 5px solid springgreen; border-radius: 10px;"
+            />
+
+
+          </p>
+
+          <p class="text-center">
+
+            <input
+            id="expr"
+            type="text"
+            class="text-center"
+            placeholder="MM"
+            style="background-color:black !important; color: #fff; width: 75px;  border: 5px solid springgreen; border-radius: 10px;"
+          />
+
+          <input
+          id="expr"
+          type="text"
+          class="text-center"
+          placeholder="YY"
+          style="background-color:black !important; color: #fff; width: 75px;  border: 5px solid springgreen; border-radius: 10px;"
+        />
+
+            <input
+              id="cvc"
+              type="text"
+              class="text-center"
+              placeholder="cvc"
+              style="background-color:black !important; color: #fff; width: 100px;  border: 5px solid springgreen; border-radius: 10px;"
+            />
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+
+      <div class="text-center" style="margin-top: 30px; margin-bottom: 30px;">
+        <input class="button" type="submit" name="commit" value="Save"
+          style="width: 175px; background-color: rgb(101, 237, 167); opacity: 0.8; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
+          id="profile-save" />
+
+        <input class="button" type="submit" name="commit" value="Clear"
+          style="width: 75px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+          id="refresher-stop" />
+      </div>
+
+    </div>
+    <div id="refresher" style="display: none;">
+
+      <h5 class="text-center">
+        REFRESHER
+      </h5>
+
+      <p class="text-center">
+        <input id="time-input" type="text" class="text-center" placeholder="time (ms)" style="color: #fff; width: 280px !important" />
+      </p>
+
+      <div class="text-center" style="margin-top: 30px; margin-bottom: 30px;">
+        <input class="button" type="submit" name="commit" value="Start"
+          style="width: 165px; background-color: rgb(101, 237, 167); opacity: 0.8; font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold; font-size: 15px;"
+          id="refresh-start" />
+
+        <input class="button" type="submit" name="commit" value="Stop"
+          style="width: 95px; margin-left: 10px; background-color: rgb(178, 68, 70); font-family: Cabin, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; font-weight: bold;font-size: 15px;"
+          id="refresher-stop" />
+      </div>
+
+    </div>
+
+
+
+
+    </div>
+
+ </body>
+ <script src="popup.js"></script>
+ <script src="card.js"></script>
+ <script src="auth.js"></script>
+
+
+
+
+
+
+ </html>
+
+
+

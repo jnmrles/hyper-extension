@@ -1,17 +1,12 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "skate") {
       if (response.email) {
         if (response.random) {
-          console.log("hello");
-          document.onreadystatechange("random");
+          Skate("random");
         } else {
-          document.onreadystatechange(response.size);
+          Skate(response.size);
         }
       } else {
         alert("Please Sign In. If you dont have a login, please contact JM_");
@@ -20,30 +15,19 @@ chrome.storage.local.get(
   }
 );
 
-document.onreadystatechange = (size) => {
-  if (document.readyState === "complete") {
-    Cali(size);
-  }
-};
-
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function Skate(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
+  let size = document.getElementById("product-size-chooser").options;
   let myArr = [...size];
   let url = window.location.href;
 
   for (let i = 0; i < size.length; i++) {
     let elements = size[i];
 
-    if (elements.innerText.includes(userSize)) {
-      elements.click();
-
-      document.getElementsByClassName("MuiButton-label")[1].click();
+    if (elements.innerHTML.includes(userSize)) {
+      $(elements).prop("selected", true);
+      $("#product-addtocart").click();
       ATC = true;
       foundSize = true;
 
@@ -52,17 +36,17 @@ async function Cali(userSize, random) {
   }
   if (ATC === true) {
     checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
-      2,
+      "https://www.skatedeluxe.com/cart.php",
+      "header-menu-badge",
+      10,
       userSize,
       url
     );
   } else if (ATC === false) {
     let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+    let newSize = element.innerHTML;
 
-    Cali(newSize);
+    Skate(newSize);
   }
 }
 
@@ -74,30 +58,24 @@ function sleep(ms) {
 
 // Helper checkout function for naked
 async function checkout(url, modal, time, size, link) {
+  let badges = document.getElementsByClassName(modal)[1];
+  let brand = document.getElementsByClassName("product-title-headline")[0]
+    .innerHTML;
+
   await sleep(time);
   let atcSuccess = false;
-
-  if (!document.getElementsByClassName(modal)[0]) {
-    checkout(url, modal, time, size, link);
+  if (badges.innerHTML.includes("0")) {
+    checkout(url, modal, time, size);
   }
-
-  if (document.getElementsByClassName(modal)[0]) {
+  if (!badges.innerHTML.includes("0")) {
     atcSuccess = true;
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let photo = $(".product-image.product-image-main")?.attr("data-src-d");
+    console.log(photo);
+    Webhook(brand, "", photo, size, "SkateDeluxe", link);
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
-
-    Discord(brand, "", photo, size, "CaliRoots", link);
+    Discord(brand, "", photo, size, "SkateDeluxe", link);
 
     window.location = url;
   }

@@ -1,17 +1,12 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "wood") {
       if (response.email) {
         if (response.random) {
-          console.log("hello");
-          document.onreadystatechange("random");
+          WOOD("random");
         } else {
-          document.onreadystatechange(response.size);
+          WOOD(response.size);
         }
       } else {
         alert("Please Sign In. If you dont have a login, please contact JM_");
@@ -20,30 +15,29 @@ chrome.storage.local.get(
   }
 );
 
-document.onreadystatechange = (size) => {
-  if (document.readyState === "complete") {
-    Cali(size);
-  }
-};
-
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function WOOD(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
+  let size = document.getElementsByClassName("product-sizes")[0].children;
   let myArr = [...size];
-  let url = window.location.href;
+  let url = window.location;
 
-  for (let i = 0; i < size.length; i++) {
+  let newArr = myArr.filter((s) => {
+    if (!$(s.children[0]).attr("disabled")) {
+      return s;
+    }
+  });
+  $(document.getElementsByClassName("product-form__btn btn")[0]).removeAttr(
+    "disabled"
+  );
+
+  for (let i = 0; i < newArr.length; i++) {
     let elements = size[i];
 
-    if (elements.innerText.includes(userSize)) {
-      elements.click();
+    if (elements.children[1].innerHTML.includes(userSize)) {
+      elements.children[1].click();
+      document.getElementsByClassName("product-form__btn btn")[0].click();
 
-      document.getElementsByClassName("MuiButton-label")[1].click();
       ATC = true;
       foundSize = true;
 
@@ -52,17 +46,17 @@ async function Cali(userSize, random) {
   }
   if (ATC === true) {
     checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
+      "https://www.woodwood.com/cart/view",
+      "actions-nav__item-count mini-cart-toggle__count",
       2,
       userSize,
       url
     );
   } else if (ATC === false) {
-    let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+    let element = newArr[Math.floor(Math.random() * newArr.length)];
+    let newSize = element.children[1].innerHTML;
 
-    Cali(newSize);
+    WOOD(newSize);
   }
 }
 
@@ -76,28 +70,33 @@ function sleep(ms) {
 async function checkout(url, modal, time, size, link) {
   await sleep(time);
   let atcSuccess = false;
-
-  if (!document.getElementsByClassName(modal)[0]) {
+  if (document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     checkout(url, modal, time, size, link);
   }
-
-  if (document.getElementsByClassName(modal)[0]) {
+  if (!document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     atcSuccess = true;
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let brand = document.getElementsByClassName("product-view__title")[0]
+      .children[1].innerHTML;
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
+    Webhook(
+      brand,
+      "",
+      "https://pbs.twimg.com/profile_images/965935443421351937/zScLmaiP_400x400.jpg",
+      size,
+      "WoodWood",
+      link
+    );
 
-    Discord(brand, "", photo, size, "CaliRoots", link);
+    Discord(
+      brand,
+      "",
+      "https://pbs.twimg.com/profile_images/965935443421351937/zScLmaiP_400x400.jpg",
+      size,
+      "WoodWood",
+      link
+    );
 
     window.location = url;
   }

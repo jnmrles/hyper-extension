@@ -1,17 +1,12 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "yme") {
       if (response.email) {
         if (response.random) {
-          console.log("hello");
-          document.onreadystatechange("random");
+          YME("random");
         } else {
-          document.onreadystatechange(response.size);
+          YME(response.size);
         }
       } else {
         alert("Please Sign In. If you dont have a login, please contact JM_");
@@ -20,30 +15,27 @@ chrome.storage.local.get(
   }
 );
 
-document.onreadystatechange = (size) => {
-  if (document.readyState === "complete") {
-    Cali(size);
-  }
-};
-
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function YME(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
+  let size = document.getElementsByClassName("dropdown-item");
   let myArr = [...size];
   let url = window.location.href;
+
+  let newArr = myArr.filter((s) => {
+    if (s.classList.length === 1) {
+      return s;
+    }
+  });
 
   for (let i = 0; i < size.length; i++) {
     let elements = size[i];
 
-    if (elements.innerText.includes(userSize)) {
+    if (elements.innerHTML.includes(userSize)) {
       elements.click();
 
-      document.getElementsByClassName("MuiButton-label")[1].click();
+      document.getElementsByClassName("btn product-form-button")[0].click();
+      console.log("clicked atc");
       ATC = true;
       foundSize = true;
 
@@ -52,17 +44,17 @@ async function Cali(userSize, random) {
   }
   if (ATC === true) {
     checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
-      2,
+      "https://www.ymeuniverse.com/cart/view",
+      "count mini-cart-item-count",
+      10,
       userSize,
       url
     );
-  } else if (ATC === false) {
-    let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+  } else if (ATC === false && url.includes("product")) {
+    let element = newArr[Math.floor(Math.random() * newArr.length)];
+    let newSize = element.innerHTML;
 
-    Cali(newSize);
+    YME(newSize);
   }
 }
 
@@ -76,28 +68,33 @@ function sleep(ms) {
 async function checkout(url, modal, time, size, link) {
   await sleep(time);
   let atcSuccess = false;
-
-  if (!document.getElementsByClassName(modal)[0]) {
+  if (document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     checkout(url, modal, time, size, link);
   }
-
-  if (document.getElementsByClassName(modal)[0]) {
+  if (!document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     atcSuccess = true;
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let brand = document.getElementsByClassName(
+      "mini-cart-name product-name"
+    )[0].children[0].innerHTML;
+    Webhook(
+      brand,
+      "",
+      "https://instagram.fabj3-1.fna.fbcdn.net/v/t51.2885-19/s150x150/64285947_207444803476092_4029433094703415296_n.jpg?_nc_ht=instagram.fabj3-1.fna.fbcdn.net&_nc_ohc=54xW_p5phP8AX-SmgbS&oh=a6359cc3d678ec925248a66e5732c5cc&oe=5F0E65FF",
+      size,
+      "YME Universe",
+      link
+    );
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
-
-    Discord(brand, "", photo, size, "CaliRoots", link);
+    Discord(
+      brand,
+      "",
+      "https://instagram.fabj3-1.fna.fbcdn.net/v/t51.2885-19/s150x150/64285947_207444803476092_4029433094703415296_n.jpg?_nc_ht=instagram.fabj3-1.fna.fbcdn.net&_nc_ohc=54xW_p5phP8AX-SmgbS&oh=a6359cc3d678ec925248a66e5732c5cc&oe=5F0E65FF",
+      size,
+      "YME Universe",
+      link
+    );
 
     window.location = url;
   }

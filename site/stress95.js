@@ -1,17 +1,12 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "stress") {
       if (response.email) {
         if (response.random) {
-          console.log("hello");
-          document.onreadystatechange("random");
+          Stress("random");
         } else {
-          document.onreadystatechange(response.size);
+          Stress(response.size);
         }
       } else {
         alert("Please Sign In. If you dont have a login, please contact JM_");
@@ -20,30 +15,23 @@ chrome.storage.local.get(
   }
 );
 
-document.onreadystatechange = (size) => {
-  if (document.readyState === "complete") {
-    Cali(size);
-  }
-};
-
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function Stress(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
+  let size = document.getElementsByClassName("product-form-item-btn");
   let myArr = [...size];
   let url = window.location.href;
 
   for (let i = 0; i < size.length; i++) {
     let elements = size[i];
 
-    if (elements.innerText.includes(userSize)) {
+    if (elements.innerHTML.includes(userSize)) {
       elements.click();
 
-      document.getElementsByClassName("MuiButton-label")[1].click();
+      document
+        .getElementsByClassName("btn is-primary product-form-btn")[0]
+        .click();
+      console.log("clicked atc");
       ATC = true;
       foundSize = true;
 
@@ -52,17 +40,17 @@ async function Cali(userSize, random) {
   }
   if (ATC === true) {
     checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
-      2,
+      "https://stress95.com/cart/view",
+      "mini-cart-item-count",
+      10,
       userSize,
       url
     );
-  } else if (ATC === false) {
-    let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+  } else if (ATC === false && url.includes("product/")) {
+    let element = myArr[Math.floor(Math.random() * myArr.length)];
+    let newSize = element.innerHTML;
 
-    Cali(newSize);
+    Stress(newSize);
   }
 }
 
@@ -70,39 +58,40 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-//  Checkout - Functions
-
-// Helper checkout function for naked
 async function checkout(url, modal, time, size, link) {
   await sleep(time);
   let atcSuccess = false;
-
-  if (!document.getElementsByClassName(modal)[0]) {
+  if (document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     checkout(url, modal, time, size, link);
   }
-
-  if (document.getElementsByClassName(modal)[0]) {
+  if (!document.getElementsByClassName(modal)[0].innerHTML.includes("0")) {
     atcSuccess = true;
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let brand = document.getElementsByClassName(
+      "product-property product-property-productname"
+    )[0].innerHTML;
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
+    Discord(
+      brand,
+      "",
+      "https://www.couponbirds.com/newlogo_100/stress95-com-9PHY.png",
+      size,
+      "stress",
+      link
+    );
 
-    Discord(brand, "", photo, size, "CaliRoots", link);
-
+    Webhook(
+      brand,
+      "",
+      "https://www.couponbirds.com/newlogo_100/stress95-com-9PHY.png",
+      size,
+      "stress",
+      link
+    );
     window.location = url;
   }
 }
-
 chrome.storage.local.get(["sup", "shop", "msh"], (response) => {
   const adding = () => {
     let request = true;

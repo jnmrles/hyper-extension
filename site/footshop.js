@@ -1,14 +1,22 @@
 chrome.storage.local.get(
   ["size", "store", "email", "webhook", "random"],
   (response) => {
-    if (
-      (response.size || response.random) &&
-      response.store === "caliroots" &&
-      window.location.href.includes("product")
-    ) {
+    if ((response.size || response.random) && response.store === "footshop") {
       if (response.email) {
+        javascript: (function () {
+          function l(u, i) {
+            var d = document;
+            if (!d.getElementById(i)) {
+              var s = d.createElement("script");
+              s.src = u;
+              s.id = i;
+              d.body.appendChild(s);
+            }
+          }
+          l("//code.jquery.com/jquery-3.5.1.min.js", "jquery");
+        })();
+
         if (response.random) {
-          console.log("hello");
           document.onreadystatechange("random");
         } else {
           document.onreadystatechange(response.size);
@@ -22,28 +30,34 @@ chrome.storage.local.get(
 
 document.onreadystatechange = (size) => {
   if (document.readyState === "complete") {
-    Cali(size);
+    console.log("DOM is Complete");
+    Foot(size);
   }
 };
 
-async function Cali(userSize, random) {
-  document.getElementsByClassName("MuiButton-label")[1].click();
-
+function Foot(userSize, random) {
   let ATC = false;
   let foundSize = false;
-  let size = document.getElementsByClassName(
-    "MuiList-root MuiMenu-list MuiList-padding"
-  )[0].children;
-  let myArr = [...size];
+
   let url = window.location.href;
 
+  $(
+    ".Dropdown_activeItem_LAVaT.ProductSizesWithAvailability_activeItem_25eTk"
+  )[0].click();
+  let size = document.getElementsByClassName("Dropdown_list_GFfGs")[0].children;
+  console.log("List", size);
   for (let i = 0; i < size.length; i++) {
     let elements = size[i];
-
-    if (elements.innerText.includes(userSize)) {
+    console.log(elements.children[0].children[0].innerText);
+    if (elements.children[0].children[0].innerHTML.includes(userSize)) {
       elements.click();
 
-      document.getElementsByClassName("MuiButton-label")[1].click();
+      document
+        .getElementsByClassName(
+          "buttons_button_2ln-y ProductProperties_addToCart_32JsZ buttons_fullWidth_38p0Q buttons_orange_ry8v2"
+        )[0]
+        .click();
+
       ATC = true;
       foundSize = true;
 
@@ -52,17 +66,24 @@ async function Cali(userSize, random) {
   }
   if (ATC === true) {
     checkout(
-      "https://www.caliroots.com/checkout",
-      "MuiSnackbar-root MuiSnackbar-anchorOriginTopRight",
-      2,
+      "",
+      "buttons_button_2ln-y CartFooter_button_3OniB buttons_fullWidth_38p0Q",
+      10,
       userSize,
       url
     );
+    console.log("checking");
   } else if (ATC === false) {
-    let element = size[Math.floor(Math.random() * size.length)];
-    let newSize = element.innerText;
+    // let newArr = document.getElementsByClassName(
+    //   "Options__optionClass___3kJMeU2j7k Options__withBorderBottom___3Im5jx7ea-"
+    // );
 
-    Cali(newSize);
+    // let element = size[Math.floor(Math.random() * size.length)];
+
+    // let randSize = element.children[0].children[0].innerHTML;
+
+    // Foot(randSize);
+    console.log("false");
   }
 }
 
@@ -74,35 +95,29 @@ function sleep(ms) {
 
 // Helper checkout function for naked
 async function checkout(url, modal, time, size, link) {
+  let photo = $("ImageSlider_image_2Vl4h").attr("src");
+  let photoLink = $(photo).attr("src");
+  let photoUrl = `https:${photoLink}`;
   await sleep(time);
   let atcSuccess = false;
-
   if (!document.getElementsByClassName(modal)[0]) {
-    checkout(url, modal, time, size, link);
+    checkout(url, modal, time, size);
   }
-
   if (document.getElementsByClassName(modal)[0]) {
     atcSuccess = true;
+    url = $(document.getElementsByClassName(modal)[0]).attr("href");
   }
-
-  let badges = document.getElementsByClassName(modal)[0];
-  let brand = document.getElementsByClassName(
-    "MuiTypography-root  MuiTypography-h2"
-  )[0].innerText;
-
   if (atcSuccess === true) {
-    let photo = document
-      .getElementsByClassName("lazyloaded")[0]
-      .getAttribute("src");
+    let brand = document.getElementsByClassName(
+      "ProductProperties_hasLogo_2b-0v"
+    )[0].innerHTML;
+    Webhook(brand, "", photoUrl, size, "FootShop", link);
 
-    Webhook(brand, "", photo, size, "CaliRoots", link);
-
-    Discord(brand, "", photo, size, "CaliRoots", link);
+    Discord(brand, "", photoUrl, size, "FootShop", link);
 
     window.location = url;
   }
 }
-
 chrome.storage.local.get(["sup", "shop", "msh"], (response) => {
   const adding = () => {
     let request = true;
